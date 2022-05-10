@@ -7,6 +7,7 @@
         <%- include('../includes/navigation.ejs') %>
 
             <main>
+                <% let sum = 0 %>
                 <% if (orders.length <=0) { %>
                     <h1>My Orders</h1>
                 <% } else { %>
@@ -19,8 +20,10 @@
                                         <li>
                                             <%= p.product.title %> (<%= p.quantity %>)
                                         </li>
-                                    <% }) %>
+                                        <% sum += p.product.price %>
+                                        <% }) %>
                                 </ul>
+                                <h3>Sub Total: $ <%= sum %></h3>
                             </li>
                         <% }) %>
                     </ul>
