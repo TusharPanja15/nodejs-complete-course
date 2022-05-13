@@ -6,8 +6,7 @@ exports.getAddProduct = (req, res, next) => {
         path: '/admin/add-product',
         editing: false,
         productCSS: true,
-        activeAddProduct: true,
-        isAuthenticated: req.session.isLoggedIn
+        activeAddProduct: true
     });
 };
 
@@ -48,8 +47,7 @@ exports.getEditProduct = (req, res, next) => {
                 docTitle: "Edit Product",
                 path: '/admin/edit-product',
                 editing: editMode,
-                product: product,
-                isAuthenticated: req.session.isLoggedIn
+                product: product
             });
         })
         .catch(err => console.log(err))
@@ -86,8 +84,7 @@ exports.getAdminProducts = (req, res, next) => {
             res.render('admin/products', {
                 prods: products,
                 docTitle: 'Admin Products',
-                path: '/admin/products',
-                isAuthenticated: req.session.isLoggedIn
+                path: '/admin/products'
             });
         })
         .catch(err => console.log(err))
