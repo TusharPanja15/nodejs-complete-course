@@ -6,7 +6,7 @@ const { validationResult } = require('express-validator/check');
 
 const User = require('../models/user');
 
-const transpoter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
@@ -106,13 +106,13 @@ exports.postLogin = (req, res, next) => {
                         .render('auth/login', {
                             docTitle: 'Login',
                             path: '/login',
-                            errorMessage: errors.array()[0].msg,
+                            errorMessage: "Invalid email or password.",
                             oldInput: {
                                 email: email,
                                 password: password
                             },
                             validationErrors: []
-                        })  
+                        })
                 })
                 .catch(err => {
                     console.log(err)
@@ -155,12 +155,12 @@ exports.postSignup = (req, res, next) => {
         })
         .then(result => {
             res.redirect('/login')
-            return transpoter.sendMail({
-                to: email,
-                from: 'shop@node-complete.com',
-                subject: 'Signup succeeded!',
-                html: '<h1>You successfully signed up</h1>'
-            })
+            // return transporter.sendMail({
+            //     to: email,
+            //     from: 'shop@node-complete.com',
+            //     subject: 'Signup succeeded!',
+            //     html: '<h1>You successfully signed up</h1>'
+            // })
         })
         .catch(err => {
             console.log(err)
@@ -184,7 +184,9 @@ exports.getReset = (req, res, next) => {
     res.render('auth/reset', {
         docTitle: 'Reset Password',
         path: '/reset',
-        errorMessage: message
+        errorMessage: message,
+        validationErrors: [],
+        oldInput: ''
     })
 }
 
@@ -194,7 +196,22 @@ exports.postReset = (req, res, next) => {
             console.log(err);
             return res.redirect('/reset')
         }
+
         const token = buffer.toString('hex')
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res
+                .status(422)
+                .render('auth/reset', {
+                    docTitle: 'Reset Password',
+                    path: '/reset',
+                    errorMessage: errors.array()[0].msg,
+                    validationErrors: errors.array(),
+                    oldInput: req.body.email
+                })
+        }
+
         User
             .findOne({ email: req.body.email })
             .then(user => {
@@ -208,13 +225,13 @@ exports.postReset = (req, res, next) => {
             })
             .then(result => {
                 res.redirect('/')
-                transpoter.sendMail({
+                transporter.sendMail({
                     to: req.body.email,
                     from: 'shop@node-complete.com',
                     subject: 'Password reset',
                     html: `
                     <p>You requested a password reset</p>
-                    <p>Click this <a href="http://localhost:3000/reset/${token}">Link</a> to set a new password.</p>
+                    <p>Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password.</p>
                     `
                 })
             })
@@ -242,6 +259,8 @@ exports.getNewPassword = (req, res, next) => {
                 docTitle: 'New Password',
                 path: '/new-password',
                 errorMessage: message,
+                validationErrors: [],
+                oldInput: '',
                 userId: user._id.toString(),
                 passwordToken: token
             })
@@ -255,7 +274,22 @@ exports.postNewPassword = (req, res, next) => {
     const newPassword = req.body.password;
     const userId = req.body.userId;
     const passwordToken = req.body.passwordToken;
+    const errors = validationResult(req);
     let resetUser;
+
+    if (!errors.isEmpty()) {
+        return res
+            .status(422)
+            .render('auth/new-password', {
+                docTitle: 'New Password',
+                path: '/new-password',
+                errorMessage: errors.array()[0].msg,
+                validationErrors: errors.array(),
+                oldInput: req.body.email,
+                userId: userId,
+                passwordToken: passwordToken
+            })
+    }
 
     User
         .findOne({
