@@ -20,9 +20,6 @@ router.post(
             .isLength({ min: 3 })
             .withMessage('Please enter a poduct title.')
             .trim(),
-        body('imageUrl')
-            .isURL()
-            .withMessage('Please enter an valid image URL.'),
         body('price')
             .isFloat()
             .withMessage('Please enter a price amount.')
@@ -45,9 +42,6 @@ router.post(
             .isLength({ min: 3 })
             .withMessage('Please enter a poduct title.')
             .trim(),
-        body('imageUrl')
-            .isURL()
-            .withMessage('Please enter an valid image URL.'),
         body('price')
             .isFloat()
             .withMessage('Please enter a price amount.')
