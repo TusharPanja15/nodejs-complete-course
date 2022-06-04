@@ -118,7 +118,7 @@ app.use((error, req, res, next) => {
         path: "/500",
         isAuthenticated: req.session.isLoggedIn
     });
-})
+});
 
 mongoose
     .connect(MONGODB_URI)
