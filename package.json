@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "description": "Node.js complete course",
   "main": "play.js",
+  "engines": {
+    "node": "14.17.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "nodemon app.js"
+    "start": "SET NODE_ENV=production&&SET MONGO_USER=raj&&SET MONGO_PASSWORD=EvlYbfEtt2QJ889N&&SET MONGO_DEFAULT_DATABASE=shop&&SET STRIPE_KEY=sk_test_51L031mSJ7QIBp9YogCokzS0YWES7psv3xAEDquDgI2NCm5GeCLbTa2iMKpZJncPLdwlFDBxu8Mo0tDsBaAoqdDRq00vxnq9ZKB&&node app.js",
+    "start-server": "node app.js",
+    "start:dev": "nodemon app.js"
   },
   "author": "Tushar",
   "license": "ISC",
@@ -16,6 +20,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.1",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
     "csurf": "^1.11.0",
@@ -24,8 +29,10 @@
     "express-handlebars": "^3.0.2",
     "express-session": "^1.17.2",
     "express-validator": "^6.14.0",
+    "helmet": "^5.1.0",
     "mongodb": "^4.3.1",
     "mongoose": "^6.3.3",
+    "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.5",
