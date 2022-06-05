@@ -15,8 +15,7 @@ router.post(
     [
         check('email')
             .isEmail()
-            .withMessage('Please enter a valid email.')
-            .normalizeEmail(),
+            .withMessage('Please enter a valid email.'),
         body('password', 'Please enter a valid password.')
             .isLength({ min: 5 })
             .isAlphanumeric()
@@ -38,8 +37,7 @@ router.post(
                             return Promise.reject('E-Mail exists already, please pick a different one.')
                         }
                     })
-            })
-            .normalizeEmail(),
+            }),
         body('password', 'Please enter a password with only numbers and text and at least 5 characters.')
             .isLength({ min: 5 })
             .isAlphanumeric()
