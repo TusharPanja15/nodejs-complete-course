@@ -62,7 +62,26 @@ const accessLogStream = fs.createWriteStream(
     { flags: 'a' }
 );
 
-app.use(helmet());
+//app.use(helmet());
+app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        //  "default-src" used as fallback for any undeclared directives
+        "default-src": ["'self'"],
+        "script-src": ["'self'", "'unsafe-inline'", "js.stripe.com"],
+        "style-src": ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+        "frame-src": ["'self'", "js.stripe.com"],
+        "font-src": [
+          "'self'",
+          "fonts.googleapis.com",
+          "fonts.gstatic.com",
+          "res.cloudinary.com/",
+        ],
+        "img-src": ["'self'", "data:", "https://res.cloudinary.com"],
+      },
+      reportOnly: true,
+    })
+  );
 app.use(compression());
 app.use(morgan('combined', { stream: accessLogStream }));
 
