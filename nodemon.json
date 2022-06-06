@@ -1,5 +1,6 @@
 {
     "env": {
+        "ROOT_URL": "https://node-complete-v1-shop.herokuapp.com/",
         "MONGO_USER": "raj",
         "MONGO_PASSWORD": "EvlYbfEtt2QJ889N",
         "MONGO_DEFAULT_DATABASE": "shop",
